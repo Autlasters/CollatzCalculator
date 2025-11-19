@@ -27,7 +27,7 @@ int CollatzCalculator::Collatz(DULL n) {
     while (n != 1) {
         if(stopReguest.load()){
             if (!stopReguestCalled.exchange(true)) {
-                emit stopRegustCalled();
+                emit stopReguestCalledCheck();
             }
             return 0;
         }

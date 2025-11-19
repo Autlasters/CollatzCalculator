@@ -45,7 +45,7 @@ void MainWindow::onStart(){
     connect(obj, &CollatzCalculator::stopComputations, obj, &QObject::deleteLater);
     connect(obj, &CollatzCalculator::overFlowDetected, this, &MainWindow::onOverFlow);
     connect(obj, &CollatzCalculator::resultsComputed, this, &MainWindow::onResultsComputed);
-    connect(obj, &CollatzCalculator::stopRegustCalled, this, [this](){ ui->DisplayField->append("Calculations were stopped by the user.");
+    connect(obj, &CollatzCalculator::stopReguestCalledCheck, this, [this](){ ui->DisplayField->append("Calculations were stopped by the user");
                                                                         ui->StopButton->setEnabled(false);
                                                                         updateStartButton();
     });

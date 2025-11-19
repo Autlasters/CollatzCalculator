@@ -35,5 +35,5 @@ signals:
     void resultsComputed(int bestNumber, int bestChainLength, long long duration);
     void overFlowDetected();
     void stopComputations();
-    void stopRegustCalled();
+    void stopReguestCalledCheck();
 };
