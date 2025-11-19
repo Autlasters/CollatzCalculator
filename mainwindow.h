@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "collatzcalculator.h"
+#include<QThread>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,6 +22,7 @@ public:
 private:
     Ui::MainWindow *ui;
     CollatzCalculator* obj = nullptr;
+    QThread * thObj = nullptr;
 public slots:
     void onStart();
     void onStop();

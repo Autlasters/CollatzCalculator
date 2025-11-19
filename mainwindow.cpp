@@ -36,10 +36,16 @@ void MainWindow::onStart(){
     ui->StartButton->setEnabled(false);
     ui->StopButton->setEnabled(true);
     QApplication::processEvents();
-    obj = new CollatzCalculator(numberSpinBoxValue, threadSliderValue, this);
+    thObj = new QThread(this);
+    obj = new CollatzCalculator(numberSpinBoxValue, threadSliderValue, nullptr);
+    obj->moveToThread(thObj);
+    connect(thObj, &QThread::started, obj, &CollatzCalculator::start);
+    connect(obj, &CollatzCalculator::stopComputations, thObj, &QThread::quit);
+    connect(thObj, &QThread::finished, thObj, &QObject::deleteLater);
+    connect(obj, &CollatzCalculator::stopComputations, obj, &QObject::deleteLater);
     connect(obj, &CollatzCalculator::overFlowDetected, this, &MainWindow::onOverFlow);
     connect(obj, &CollatzCalculator::resultsComputed, this, &MainWindow::onResultsComputed);
-    obj->start();
+    thObj->start();
 }
 
 void MainWindow::onStop(){

@@ -47,6 +47,8 @@ int CollatzCalculator::Collatz(DULL n) {
 
 
 void CollatzCalculator::CollatzComputations(const std::vector<DULL>& values, size_t start, size_t end, int& localLongestChain, int& localNumberWithLongestChain) {
+
+
     localLongestChain = 0;
     localNumberWithLongestChain = 0;
 
@@ -120,6 +122,7 @@ void CollatzCalculator::start(){
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
     emit resultsComputed(numberWithLongestChain, longestChain, duration.count());
+    emit stopComputations();
 }
 
 
