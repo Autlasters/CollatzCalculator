@@ -45,6 +45,10 @@ void MainWindow::onStart(){
     connect(obj, &CollatzCalculator::stopComputations, obj, &QObject::deleteLater);
     connect(obj, &CollatzCalculator::overFlowDetected, this, &MainWindow::onOverFlow);
     connect(obj, &CollatzCalculator::resultsComputed, this, &MainWindow::onResultsComputed);
+    connect(obj, &CollatzCalculator::stopRegustCalled, this, [this](){ ui->DisplayField->append("Calculations were stopped by the user.");
+                                                                        ui->StopButton->setEnabled(false);
+                                                                        updateStartButton();
+    });
     thObj->start();
 }
 
@@ -65,9 +69,9 @@ void MainWindow::onExit(){
 }
 
 void MainWindow::onResultsComputed(int bestNumber, int bestChainLength, long long duration){
-    ui->DisplayField->append("The number with the longest chain: " + QString::number(bestNumber));
-    ui->DisplayField->append("It's chain: " + QString::number(bestChainLength));
-    ui->DisplayField->append("Time: " + QString::number(duration) + " ms");
-    ui->StopButton->setEnabled(false);
-    updateStartButton();
+        ui->DisplayField->append("The number with the longest chain: " + QString::number(bestNumber));
+        ui->DisplayField->append("It's chain: " + QString::number(bestChainLength));
+        ui->DisplayField->append("Time: " + QString::number(duration) + " ms");
+        ui->StopButton->setEnabled(false);
+        updateStartButton();
 }

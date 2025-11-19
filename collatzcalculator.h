@@ -18,6 +18,7 @@ private:
     int longestChain = 0;
     std::atomic<bool> overFlow;
     std::atomic<bool> stopReguest;
+    std::atomic<bool> stopReguestCalled;
     std::vector<DULL> setOfNumber;
     std::vector<std::thread> threads;
     std::vector<int> threadLongestChain;
@@ -34,4 +35,5 @@ signals:
     void resultsComputed(int bestNumber, int bestChainLength, long long duration);
     void overFlowDetected();
     void stopComputations();
+    void stopRegustCalled();
 };

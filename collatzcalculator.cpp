@@ -8,6 +8,7 @@ CollatzCalculator::CollatzCalculator(int limitOfSet, int threadNumber, QObject *
                                                                         threadNumber(threadNumber),
                                                                         overFlow(false),
                                                                         stopReguest(false),
+                                                                        stopReguestCalled(false),
                                                                         setOfNumber(limitOfSet),
                                                                         threadLongestChain(threadNumber, 0),
                                                                         threadNumberWithLongestChain(threadNumber, 0)
@@ -25,6 +26,9 @@ int CollatzCalculator::Collatz(DULL n) {
 
     while (n != 1) {
         if(stopReguest.load()){
+            if (!stopReguestCalled.exchange(true)) {
+                emit stopRegustCalled();
+            }
             return 0;
         }
         if (n > maxSystemInt) {
@@ -68,6 +72,8 @@ void CollatzCalculator::CollatzComputations(const std::vector<DULL>& values, siz
 
 void CollatzCalculator::start(){
     auto startTime = std::chrono::high_resolution_clock::now();
+    stopReguest.store(false);
+    stopReguestCalled.store(false);
 
     size_t partOfSet = setOfNumber.size() / threadNumber;
     for (size_t i = 0; i < threadNumber; ++i) {
@@ -111,17 +117,19 @@ void CollatzCalculator::start(){
         return;
     }
 
-    longestChain = 0;
-    numberWithLongestChain = 0;
-    for (size_t i = 0; i < threadNumber; ++i) {
-        if (threadLongestChain[i] > longestChain) {
-            longestChain = threadLongestChain[i];
-            numberWithLongestChain = threadNumberWithLongestChain[i];
+    if(!stopReguest.load() && !overFlow.load()){
+        longestChain = 0;
+        numberWithLongestChain = 0;
+        for (size_t i = 0; i < threadNumber; ++i) {
+            if (threadLongestChain[i] > longestChain) {
+                longestChain = threadLongestChain[i];
+                numberWithLongestChain = threadNumberWithLongestChain[i];
+            }
         }
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+        emit resultsComputed(numberWithLongestChain, longestChain, duration.count());
     }
-    auto endTime = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-    emit resultsComputed(numberWithLongestChain, longestChain, duration.count());
     emit stopComputations();
 }
 
@@ -129,5 +137,7 @@ void CollatzCalculator::start(){
 void CollatzCalculator::stop(){
     stopReguest.store(true);
 }
+
+
 
 
