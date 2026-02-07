@@ -1,8 +1,18 @@
+/*
+ * collatzcalculator.cpp
+ *
+ * This .cpp file implements the CollatzCalculator class logic, including multithreaded
+ * Collatz sequence evaluation, workload distribution across threads,
+ * overflow handling, and runtime measurement.
+ *
+ * Built with C++ in Qt Creator using MSVC 2022.
+ */
 #include "collatzcalculator.h"
 #include <chrono>
 #include <thread>
 #include <vector>
 
+//The Constructor of the class
 CollatzCalculator::CollatzCalculator(int limitOfSet, int threadNumber, QObject *parent): QObject(parent),
                                                                         limitOfSet(limitOfSet),
                                                                         threadNumber(threadNumber),
@@ -14,13 +24,14 @@ CollatzCalculator::CollatzCalculator(int limitOfSet, int threadNumber, QObject *
                                                                         threadNumberWithLongestChain(threadNumber, 0)
 {}
 
+//Method to fill the vector with the numbers
 void CollatzCalculator::vectorFill(std::vector<DULL>& vector, size_t start, size_t end) {
     for (size_t i = start; i < end; ++i) {
         vector[i] = i + 1;
     }
 }
 
-
+//Method to calculate the chain's length of the number
 int CollatzCalculator::Collatz(DULL n) {
     int chainLength = 1;
 
@@ -49,10 +60,8 @@ int CollatzCalculator::Collatz(DULL n) {
     return chainLength;
 }
 
-
+//Method to find the number with the longest chain in the given set
 void CollatzCalculator::CollatzComputations(const std::vector<DULL>& values, size_t start, size_t end, int& localLongestChain, int& localNumberWithLongestChain) {
-
-
     localLongestChain = 0;
     localNumberWithLongestChain = 0;
 
@@ -70,6 +79,7 @@ void CollatzCalculator::CollatzComputations(const std::vector<DULL>& values, siz
     }
 }
 
+//Method to start the Collatz computations
 void CollatzCalculator::start(){
     auto startTime = std::chrono::high_resolution_clock::now();
     stopReguest.store(false);
@@ -133,7 +143,7 @@ void CollatzCalculator::start(){
     emit stopComputations();
 }
 
-
+//Method to stop the Collatz computations
 void CollatzCalculator::stop(){
     stopReguest.store(true);
 }

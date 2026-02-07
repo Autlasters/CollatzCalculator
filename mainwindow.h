@@ -1,3 +1,12 @@
+/*
+ * mainwindow.h
+ *
+ * In this header file the MainWindow class is declared, which defines the GUI of the application.
+ * This file connects user interactions to the Collatz computation logic and
+ * manages communication with the worker thread using Qt signals and slots.
+ *
+ * Built with C++ in Qt Creator using MSVC 2022.
+ */
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 

@@ -1,3 +1,12 @@
+/*
+ * collatzcalculator.h
+ *
+ * In this header file the CollatzCalculator class is declared, which contains the core logic of the
+ * application. This class manages Collatz sequence computations, multithreaded
+ * execution, and result communication using Qt signals and slots.
+ *
+ * Built with C++ in Qt Creator using MSVC 2022.
+ */
 #pragma once
 #include<QObject>
 #include<vector>
